@@ -37,7 +37,8 @@ stepstats  <- c(mean = round(mean(sumbyday$steps),0), median = round(median(sumb
 
 options(scipen=999) ##when printing out numbers, don't make them scientific notation
 ```
-The mean number of steps is `r stepstats["mean"] `
+The mean number of steps is `r stepstats["mean"]`
+
 The median number of steps is `r stepstats["median"]`
 
 
@@ -55,7 +56,6 @@ The time between 8:35 and 8:40 (or the interval of `r maxsteps[1]`) contains the
 I am going to use the average of each interval from all days (not including NA) for the steps
 for that interval on each NA day.
 ```{r}
-
 #here I am determining what dates need to be updated
 missingdata <- is.na(activity$steps)
 #this gives me a list of the unique dates that need to be updated
@@ -70,12 +70,10 @@ The dates are: `r dates`
 ```{r}
 #use the average over days data, gives the average for each interval over all the days, excluding NA data
 activity[missingdata, "steps"] <- averageoverdays$steps
-
 activitymelt2 <- melt(activity,id = c("date", "interval"), na.rm = TRUE)
 
 #sumbyday is the sum total of steps taken per day
 sumbyday2 <- dcast(activitymelt2, date ~ variable , sum)
-
 
 hist(sumbyday2$steps/1000, xlab= "Total number of steps by day in thousands", main = NULL, breaks = 15)
 stepstats2  <- c(mean = mean(sumbyday2$steps), median = median(sumbyday2$steps))
@@ -97,12 +95,12 @@ activity$weekday[weekend] <- "Weekend"
 activity$weekday[!weekend] <- "Weekday"
 activity$weekday <- as.factor(activity$weekday)
 
-activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
-#meanbydayofweek is the sum total of steps taken per day
-meanbydayofweek <- dcast(activitymelt, weekday ~ variable , mean)
-head(meanbydayofweek)
-#meanbydayofweek
+#activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
+#averageoverweekdays <- dcast(activitymelt, interval ~ variable, mean)
+#head(averageoverweekdays)
 
 
 qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
 ```
+
+The max steps occurs later in the day on weekends than on weekdays

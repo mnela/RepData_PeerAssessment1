@@ -38,6 +38,7 @@ stepstats  <- c(mean = round(mean(sumbyday$steps),0), median = round(median(sumb
 options(scipen=999) ##when printing out numbers, don't make them scientific notation
 ```
 The mean number of steps is 10766
+
 The median number of steps is 10765
 
 
@@ -76,12 +77,10 @@ The dates are: 2012-10-01, 2012-10-08, 2012-11-01, 2012-11-04, 2012-11-09, 2012-
 ```r
 #use the average over days data, gives the average for each interval over all the days, excluding NA data
 activity[missingdata, "steps"] <- averageoverdays$steps
-
 activitymelt2 <- melt(activity,id = c("date", "interval"), na.rm = TRUE)
 
 #sumbyday is the sum total of steps taken per day
 sumbyday2 <- dcast(activitymelt2, date ~ variable , sum)
-
 
 hist(sumbyday2$steps/1000, xlab= "Total number of steps by day in thousands", main = NULL, breaks = 15)
 ```
@@ -109,23 +108,14 @@ activity$weekday[weekend] <- "Weekend"
 activity$weekday[!weekend] <- "Weekday"
 activity$weekday <- as.factor(activity$weekday)
 
-activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
-#meanbydayofweek is the sum total of steps taken per day
-meanbydayofweek <- dcast(activitymelt, weekday ~ variable , mean)
-head(meanbydayofweek)
-```
-
-```
-##   weekday    steps
-## 1 Weekday 35.61058
-## 2 Weekend 42.36640
-```
-
-```r
-#meanbydayofweek
+#activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
+#averageoverweekdays <- dcast(activitymelt, interval ~ variable, mean)
+#head(averageoverweekdays)
 
 
 qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
+The max steps occurs later in the day on weekends than on weekdays
