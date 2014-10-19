@@ -108,14 +108,45 @@ activity$weekday[weekend] <- "Weekend"
 activity$weekday[!weekend] <- "Weekday"
 activity$weekday <- as.factor(activity$weekday)
 
-#activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
-#averageoverweekdays <- dcast(activitymelt, interval ~ variable, mean)
-#head(averageoverweekdays)
+activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
+averageoverweekdays <- dcast(activitymelt, interval + weekday ~ variable, mean)
+head(averageoverweekdays)
+```
 
+```
+##   interval weekday      steps
+## 1        0 Weekday 2.25115304
+## 2        0 Weekend 0.21462264
+## 3        5 Weekday 0.44528302
+## 4        5 Weekend 0.04245283
+## 5       10 Weekday 0.17316562
+## 6       10 Weekend 0.01650943
+```
 
-qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
+```r
+tail(averageoverweekdays)
+```
+
+```
+##     interval weekday      steps
+## 571     2345 Weekday 0.26331237
+## 572     2345 Weekend 1.70518868
+## 573     2350 Weekday 0.29685535
+## 574     2350 Weekend 0.02830189
+## 575     2355 Weekday 1.41006289
+## 576     2355 Weekend 0.13443396
+```
+
+```r
+qplot(interval, steps, data=averageoverweekdays, facets = .~weekday, rm.na = TRUE, geom = "line")
 ```
 
 ![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
+
+```r
+qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-7-2.png) 
 
 The max steps occurs later in the day on weekends than on weekdays

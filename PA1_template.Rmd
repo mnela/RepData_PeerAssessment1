@@ -95,12 +95,11 @@ activity$weekday[weekend] <- "Weekend"
 activity$weekday[!weekend] <- "Weekday"
 activity$weekday <- as.factor(activity$weekday)
 
-#activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
-#averageoverweekdays <- dcast(activitymelt, interval ~ variable, mean)
-#head(averageoverweekdays)
+activitymelt <- melt(activity,id = c("date", "interval", "weekday"), na.rm = TRUE)
+averageoverweekdays <- dcast(activitymelt, interval + weekday ~ variable, mean)
+head(averageoverweekdays)
+tail(averageoverweekdays)
+qplot(interval, steps, data=averageoverweekdays, facets = .~weekday, rm.na = TRUE, geom = "line")
 
-
-qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
 ```
 
-The max steps occurs later in the day on weekends than on weekdays
