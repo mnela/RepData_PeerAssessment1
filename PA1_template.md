@@ -144,9 +144,18 @@ qplot(interval, steps, data=averageoverweekdays, facets = .~weekday, rm.na = TRU
 ![](./PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
 ```r
-qplot(interval, steps, data=activity, facets = .~weekday, rm.na = TRUE, geom = "line")
+library(plyr)
+stats <- ddply(averageoverweekdays, c("weekday"), function(df)c(mean=mean(df$steps),median=median(df$steps),sd=sd(df$steps),max=max(df$steps)))
+stats
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-7-2.png) 
+```
+##   weekday     mean   median       sd      max
+## 1 Weekday 35.61058 25.80314 41.61918 230.3782
+## 2 Weekend 42.36640 32.33962 42.54390 166.6392
+```
 
-The max steps occurs later in the day on weekends than on weekdays
+```r
+ maxtime <- averageoverweekdays$interval[averageoverweekdays$steps==stats$max]
+```
+During a weekday the maximum of the average number of steps is 230 at 835 the morning, while on the weekend the maximum of the average number of steps is 167 at 915 in the morning.

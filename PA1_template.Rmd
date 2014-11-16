@@ -100,6 +100,9 @@ averageoverweekdays <- dcast(activitymelt, interval + weekday ~ variable, mean)
 head(averageoverweekdays)
 tail(averageoverweekdays)
 qplot(interval, steps, data=averageoverweekdays, facets = .~weekday, rm.na = TRUE, geom = "line")
-
+library(plyr)
+stats <- ddply(averageoverweekdays, c("weekday"), function(df)c(mean=mean(df$steps),median=median(df$steps),sd=sd(df$steps),max=max(df$steps)))
+stats
+ maxtime <- averageoverweekdays$interval[averageoverweekdays$steps==stats$max]
 ```
-
+During a weekday the maximum of the average number of steps is `r round(stats$max[stats$weekday=="Weekday"],0)` at `r maxtime[1]` the morning, while on the weekend the maximum of the average number of steps is `r round(stats$max[stats$weekday=="Weekend"],0)` at `r maxtime[2]` in the morning.
